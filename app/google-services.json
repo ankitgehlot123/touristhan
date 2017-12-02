@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "576333036597",
+    "firebase_url": "https://touristhan-177122.firebaseio.com",
+    "project_id": "touristhan-177122",
+    "storage_bucket": "touristhan-177122.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576333036597:android:dd4118a8943438ab",
+        "android_client_info": {
+          "package_name": "com.touristhan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "576333036597-p448dlscqd281ara1pa5dil24qb7ggob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.touristhan",
+            "certificate_hash": "e51bae54ec13a3832017db55000bdd531963d2f9"
+          }
+        },
+        {
+          "client_id": "576333036597-qi10dtit5r2l3obbkemkfur4raemu8hn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_cxTnubcIeuFGVTiz8L3Flffape1ctVg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "576333036597-qi10dtit5r2l3obbkemkfur4raemu8hn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

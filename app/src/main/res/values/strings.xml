@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Touristhan</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="greet">Khamma Ghani! Let\'s get you started with your very personal tour guide.</string>
+    <string name="rajasthan_tourism_logo">Rajasthan Tourism Logo</string>
+    <string name="logged_in">You\'re logged in.</string>
+    <string name="cancel_login">Login Cancelled.</string>
+    <string name="error_login">Sorry, an error occurred.</string>
+
+    <string name="facebook_app_id">152190185404366</string>
+    <string name="fb_login_protocol_scheme">fb152190185404366</string>
+    <string name="splash_screen_image">Splash screen image.</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDCsJ4RfexQYjgQaOSMwfL8BVBnbSf5jTk</string>
+    <string name="chatbot">Chatbot</string>
+    <string name="find_a_friend">Find a friend</string>
+    <string name="nearby_spots">Nearby Spots</string>
+
+    <!--SLIDER-->
+
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Namaste!</string>
+    <string name="slide_1_desc">I am here to give you the best experience of your journey.</string>
+
+    <string name="slide_2_title">Find Friends</string>
+    <string name="slide_2_desc">Find friends from your country at nearby places</string>
+
+    <string name="slide_3_title">Trip Advisor</string>
+    <string name="slide_3_desc">Enjoy rather scheduling.</string>
+
+    <string name="slide_4_title">SOS</string>
+    <string name="slide_4_desc">In any case, if you feel unsafe, we are there for you.</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+    <string name="what_s_on_your_mind">Enter your query</string>
+</resources>

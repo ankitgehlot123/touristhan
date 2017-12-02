@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+    defaultConfig {
+        applicationId "com.touristhan"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '25.3.1'
+                }
+            }
+        }
+    }
+
+
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
+    compile 'com.google.firebase:firebase-database:11.0.4'
+    compile 'com.android.support:design:26.+'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:okhttp-ws:3.4.2'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.ibm.watson.developer_cloud:conversation:3.8.0'
+    compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.3'
+    compile 'com.ibm.mobilefirstplatform.clientsdk.android:analytics:1.1.0'
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:cardview-v7:25.3.1'
+}
+apply plugin: 'com.google.gms.google-services'
