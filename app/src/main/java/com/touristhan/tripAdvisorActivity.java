@@ -3,12 +3,18 @@ package com.touristhan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.util.Map;
+
+import model.UserModel;
+
 public class tripAdvisorActivity extends AppCompatActivity {
    private WebView wv1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

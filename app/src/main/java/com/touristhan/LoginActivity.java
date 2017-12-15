@@ -7,14 +7,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.DataSnapshot;
@@ -22,20 +24,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import java.util.Arrays;
 import Utils.Session;
 import Utils.Utils;
 import model.UserModel;
 
 
 public class LoginActivity extends AppCompatActivity {
-    public static String id, link, name;
+    public static String id, link, name,picture,languages,gender;
     TextView textView;
     LoginButton loginButton;
     CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
     private DatabaseReference mRootRef= FirebaseDatabase.getInstance().getReference();
     DatabaseReference mUsersRef=mRootRef.child(Utils.userTable);
 
@@ -46,6 +49,23 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton)findViewById(R.id.login_button);
+        accessTokenTracker= new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+
+            }
+        };
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+
+            }
+        };
+
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+        loginButton.setReadPermissions(Arrays.asList("public_profile","user_likes"));
         textView = (TextView)findViewById(R.id.textView_Status);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -55,13 +75,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         displayUserInfo(object);
-//                        Log.wtf("ankit",""+object);
-//                        Log.wtf("ankit",""+response.getRawResponse());
+                       Log.wtf("ankit1",""+object);
+                       Log.wtf("ankit2",""+response.getRawResponse());
                     }
                 });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,link,name");
+                parameters.putString("fields", "id,link,name,picture.width(100).height(100),gender");
                 graphRequest.setParameters(parameters);
                 graphRequest.executeAsync();
 
@@ -87,11 +107,16 @@ public class LoginActivity extends AppCompatActivity {
             id = object.getString("id");
             link = object.getString("link");
             name = object.getString("name");
+            picture=object.getJSONObject("picture").getJSONObject("data").getString("url");
+            languages ="languages";
+            gender= object.getString("gender");
 
             UserModel model = new UserModel();
             model.setId(id);
             model.setLink(link);
             model.setName(name);
+            model.setPicture(picture);
+            model.setGender(gender);
             model.setLatitude("");
             model.setLongitude("");
 
@@ -100,22 +125,21 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     try{
-                        Log.wtf("ankit",dataSnapshot.getValue().toString());
                         String data_json = dataSnapshot.getValue().toString();
+                        Log.wtf("ankit00",data_json);
                         data_json = data_json.replace("=", "=\"");
                         data_json = data_json.replace(",", "\",");
                         data_json = data_json.replace("}", "\"}");
-                        Log.wtf("ankit",data_json);
+                        data_json = data_json.replace("oh=\"", "");
+                        data_json = data_json.replace("oe=\"", "");
+                        Log.wtf("ankity",data_json);
 
                         JSONObject jobj = new JSONObject(data_json);
                         String id = jobj.getString("id");
 
                         Session.getSession(LoginActivity.this).setUserId(id);
-                        Log.wtf("ankit",""+jobj);
-
                         startActivity(new Intent(LoginActivity.this,Dashboard.class));
                         finish();
-
                     }catch (Exception ex){
                         ex.printStackTrace();
                     }
@@ -148,5 +172,18 @@ public class LoginActivity extends AppCompatActivity {
     {
         Intent og = new Intent(this, guide.class);
         startActivity(og);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Profile profile = Profile.getCurrentProfile();
+
     }
 }

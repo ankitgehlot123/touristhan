@@ -112,7 +112,6 @@ public class LocationUpdater extends Service implements GoogleApiClient.Connecti
                             DatabaseReference mRootRef= FirebaseDatabase.getInstance().getReference();
                             mRootRef.child(Utils.userTable).child(session.getUserId()).child("latitude").setValue(latitude);
                             mRootRef.child(Utils.userTable).child(session.getUserId()).child("longitude").setValue(longitude);
-
                             stopSelf();
 //                        }
 

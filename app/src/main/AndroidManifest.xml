@@ -79,11 +79,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".Dashboard"
-            android:label="@string/title_activity_dashboard"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -110,9 +105,22 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".findplaces" android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait"/>
-        <activity android:name=".guide" android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait" />
-        <activity android:name=".tripAdvisorActivity" android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait" />
+        <activity
+            android:name=".findplaces"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".guide"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tripAdvisorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Dashboard"
+            android:label="@string/title_activity_dashboard2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

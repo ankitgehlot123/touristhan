@@ -3,16 +3,36 @@ package com.touristhan;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -22,8 +42,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import Utils.Utils;
 import model.UserModel;
@@ -95,6 +117,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String link = (String) singleUser.get("link");
                 model.setLink(link);
 
+                String pic = (String) singleUser.get("picture");
+                model.setPicture(pic);
+
                 if(singleUser.get("latitude") instanceof Double){
                     String userLatitude = ((Double) singleUser.get("latitude")).toString();
                     model.setLatitude(userLatitude);
@@ -158,11 +183,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double latitude = Double.parseDouble(model.getLatitude());
                 double longitude = Double.parseDouble(model.getLongitude());
                 LatLng myLocation = new LatLng(latitude, longitude);
-
+                Log.wtf("ankit",model.getPicture().toString());
 
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(myLocation)
-                        .title(model.getName()));
+                        .title(model.getName())
+                         );
+                loadMarkerIcon(marker,model.getPicture());
                 marker.setTag(model.getId());
             }catch (Exception ex){
                 ex.printStackTrace();
@@ -170,8 +197,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
+    private void loadMarkerIcon(final Marker marker,String url) {
+        Glide.with(this).load(url)
+                .asBitmap().fitCenter().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
 
+                if (bitmap != null) {
+                    // Create a rounded corners bitmap
+                    Bitmap mBitmap = getRoundedBitmap(bitmap,15);
+                    mBitmap = addBorderToRoundedBitmap(mBitmap,15, 10, Color.WHITE);
+                    mBitmap = addBorderToRoundedBitmap(mBitmap, 15, 3, Color.LTGRAY);
+                    BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(mBitmap);
+                    marker.setIcon(icon);
+                }
 
+            }
+        });
+    }
     @Override
     public void onInfoWindowClick(Marker marker) {
         String id = (String)marker.getTag();
@@ -190,4 +233,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return new Intent(Intent.ACTION_VIEW, uri);
     }
+    protected Bitmap getRoundedBitmap(Bitmap srcBitmap, int cornerRadius) {
+        // Initialize a new instance of Bitmap
+        Bitmap dstBitmap = Bitmap.createBitmap(
+                srcBitmap.getWidth(), // Width
+                srcBitmap.getHeight(), // Height
+
+                Bitmap.Config.ARGB_8888 // Config
+        );
+        Canvas canvas = new Canvas(dstBitmap);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        Rect rect = new Rect(0, 0, srcBitmap.getWidth(), srcBitmap.getHeight());
+        RectF rectF = new RectF(rect);
+        canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(srcBitmap, 0, 0, paint);
+
+        // Free the native object associated with this bitmap.
+        srcBitmap.recycle();
+
+        // Return the circular bitmap
+        return dstBitmap;
+    }
+
+    // Custom method to add a border around rounded bitmap
+    protected Bitmap addBorderToRoundedBitmap(Bitmap srcBitmap, int cornerRadius, int borderWidth, int borderColor){
+        // We will hide half border by bitmap
+        borderWidth = borderWidth*2;
+
+        // Initialize a new Bitmap to make it bordered rounded bitmap
+        Bitmap dstBitmap = Bitmap.createBitmap(
+                srcBitmap.getWidth() + borderWidth, // Width
+                srcBitmap.getHeight() + borderWidth, // Height
+                Bitmap.Config.ARGB_8888 // Config
+        );
+
+        // Initialize a new Canvas instance
+        Canvas canvas = new Canvas(dstBitmap);
+
+        // Initialize a new Paint instance to draw border
+        Paint paint = new Paint();
+        paint.setColor(borderColor);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(borderWidth);
+        paint.setAntiAlias(true);
+
+        // Initialize a new Rect instance
+        Rect rect = new Rect(
+                borderWidth/2,
+                borderWidth/2,
+                dstBitmap.getWidth() - borderWidth/2,
+                dstBitmap.getHeight() - borderWidth/2
+        );
+
+        // Initialize a new instance of RectF;
+        RectF rectF = new RectF(rect);
+
+        // Draw rounded rectangle as a border/shadow on canvas
+        canvas.drawRoundRect(rectF,cornerRadius,cornerRadius,paint);
+
+        // Draw source bitmap to canvas
+        canvas.drawBitmap(srcBitmap, borderWidth / 2, borderWidth / 2, null);
+        srcBitmap.recycle();
+
+        return dstBitmap;
+    }
 }
+

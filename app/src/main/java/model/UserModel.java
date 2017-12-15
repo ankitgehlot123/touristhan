@@ -5,6 +5,9 @@ public class UserModel {
     private String name = "";
     private String latitude = "";
     private String longitude = "";
+    private String picture = "";
+    private String gender= "";
+    private String languages = "";
 
     public String getId() {
         return id;
@@ -29,6 +32,18 @@ public class UserModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getLanguages() {return languages;}
+
+    public void setLanguages(String languages) {this.languages = languages;}
+
+    public String getPicture() { return picture;}
+
+    public void setPicture(String picture) {this.picture = picture;}
+
+    public String getGender() {return gender;}
+
+    public void setGender(String gender) {this.gender = gender;}
 
     public String getLatitude() {
         return latitude;

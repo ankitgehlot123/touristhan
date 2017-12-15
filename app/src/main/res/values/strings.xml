@@ -15,7 +15,7 @@
     <string name="fb_login_protocol_scheme">fb152190185404366</string>
     <string name="splash_screen_image">Splash screen image.</string>
     <string name="title_activity_dashboard">Dashboard</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDCsJ4RfexQYjgQaOSMwfL8BVBnbSf5jTk</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCM9c18TL5rX4vNHfVBmD9WpLUu2VVH51A</string>
     <string name="chatbot">Chatbot</string>
     <string name="find_a_friend">Find a friend</string>
     <string name="nearby_spots">Nearby Spots</string>
@@ -42,4 +42,10 @@
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
     <string name="what_s_on_your_mind">Enter your query</string>
+    <string name="title_activity_dashboard2">Dashboard</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
